@@ -5,14 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <script type="text/javascript">
-        // Replace 'https://primemods.shop' with your actual website URL.
-        const targetURL = 'https://primemods.shop';
-        // Replace 'your-secret' with your actual secret parameter.
+        // Function to get query parameter value by name
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const targetURL = getQueryParam('url');
         const secret = 'your-secret';
-        window.location.href = `${targetURL}?secret=${secret}`;
+
+        if (targetURL) {
+            // Validate the targetURL to ensure it points to your domain
+            const validDomain = 'primemods.shop';
+            const url = new URL(targetURL);
+
+            if (url.hostname === validDomain) {
+                window.location.href = `${targetURL}?secret=${secret}`;
+            } else {
+                document.write('Invalid target URL.');
+            }
+        } else {
+            document.write('No target URL specified.');
+        }
     </script>
 </head>
 <body>
-    <p>If you are not redirected automatically, follow this <a href="https://primemods.shop?secret=your-secret">link</a>.</p>
+    <p>If you are not redirected automatically, follow this <a id="redirectLink" href="#">link</a>.</p>
+    <script type="text/javascript">
+        const linkElement = document.getElementById('redirectLink');
+        const targetURL = getQueryParam('url');
+
+        if (targetURL) {
+            const validDomain = 'primemods.shop';
+            const url = new URL(targetURL);
+
+            if (url.hostname === validDomain) {
+                linkElement.href = `${targetURL}?secret=${secret}`;
+                linkElement.textContent = 'this link';
+            } else {
+                linkElement.textContent = 'Invalid target URL.';
+            }
+        } else {
+            linkElement.textContent = 'No target URL specified.';
+        }
+    </script>
 </body>
 </html>
